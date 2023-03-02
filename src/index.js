@@ -12,12 +12,13 @@ function App() {
       <header>
         <Link className="site-logo" to="/">#VanLife</Link>
         <nav>
-          <Link to="/" >Vans</Link>
+          <Link to="/vans" >Vans</Link>
           <Link to="/about">About</Link>
         </nav>
       </header>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/vans" element={<Vans />} />
         <Route path="/about" element={<About />} />
       </Routes>
     </BrowserRouter>
