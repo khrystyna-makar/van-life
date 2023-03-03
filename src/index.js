@@ -31,9 +31,6 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-    <footer>
-    © 2023 #VANLIFE
-    </footer>
     </div>
   )
 }

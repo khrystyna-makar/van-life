@@ -1,14 +1,14 @@
 import React from 'react';
-import { Link } from "react-router-dom"
+import { NavLink, Link } from "react-router-dom"
 
 export default function Header() {
     return (
         <header>
             <Link className="site-logo" to="/">#VanLife</Link>
             <nav>
-                <Link to="/host" >Host</Link>
-                <Link to="/vans" >Vans</Link>
-                <Link to="/about">About</Link>
+                <NavLink className={({isActive}) => isActive ? "active-link" : null} to="/host" >Host</NavLink>
+                <NavLink className={({isActive}) => isActive ? "active-link" : null} to="/vans" >Vans</NavLink>
+                <NavLink className={({isActive}) => isActive ? "active-link" : null} to="/about">About</NavLink>
             </nav>
         </header>
     )

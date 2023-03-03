@@ -7,6 +7,9 @@ export default function Layout() {
         <>
         <Header />
         <Outlet />
+        <footer>
+    © 2023 #VANLIFE
+    </footer>
         </>
     )
 }
