@@ -8,8 +8,6 @@ export function loader() {
 
 export default function Vans() {
 
-    const [loading, setLoading] = React.useState(false)
-    const [error, setError] = React.useState(null)
     const [searchParams, setSearchParams] = useSearchParams()
     const typeFilter = searchParams.get("type");
 
@@ -31,14 +29,6 @@ export default function Vans() {
         </div> 
     )
     })
-
-    if(loading) {
-        return (<h1>Loading...</h1>)
-    }
-
-    if (error) {
-        return <h1>There was an error: {error.message}</h1>
-    }
 
     return (
         <div className="van-list-container">
