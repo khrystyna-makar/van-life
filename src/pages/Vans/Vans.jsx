@@ -5,13 +5,24 @@ import { getVans } from "../../api"
 export default function Vans() {
 
     const [vans, setVans] = React.useState([])
+    const [loading, setLoading] = React.useState(false)
+    const [error, setError] = React.useState(null)
     const [searchParams, setSearchParams] = useSearchParams()
     const typeFilter = searchParams.get("type");
 
     React.useEffect(function() {
         async function loadVans() {
-            const data = await getVans()
-            setVans(data)
+            setLoading(true)
+            try {
+                const data = await getVans()
+                setVans(data)
+            }
+            catch(err) {
+                setError(err)
+            }
+            finally {
+                setLoading(false)
+            }    
         }
         loadVans()
     }, [])
@@ -32,6 +43,15 @@ export default function Vans() {
         </div> 
     )
     })
+
+    if(loading) {
+        return (<h1>Loading...</h1>)
+    }
+
+    if (error) {
+        return <h1>There was an error: {error.message}</h1>
+    }
+
     return (
         <div className="van-list-container">
             <h1>Explore our van options</h1>
