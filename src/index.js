@@ -22,6 +22,7 @@ import HostVanPhotos from './pages/Host/HostVanPhotos';
 import HostVanInfo from './pages/Host/HostVanInfo';
 import NotFound from './components/NotFound';
 import Error from './components/Error';
+import Login from './pages/Login'
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
     <Route path="vans" element={<Vans />} loader={vansLoader} errorElement={<Error />} />
     <Route path="vans/:id" element={<VanDetail />} />
     <Route path="about" element={<About />} />
+    <Route path="login" element={<Login />} />
     <Route path="host" element={<HostLayout />} >
       <Route index element={<Dashboard />} />
       <Route path="income" element={<Income />} />
