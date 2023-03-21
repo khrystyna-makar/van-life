@@ -1,9 +1,9 @@
 import React from "react"
-import { Link, useSearchParams, useLoaderData } from "react-router-dom"
+import { Link, useSearchParams, useLoaderData, defer, Await } from "react-router-dom"
 import { getVans } from "../../api"
 
 export function loader() {
-    return getVans()
+    return defer({vans: getVans()})
 }
 
 export default function Vans() {
@@ -11,8 +11,9 @@ export default function Vans() {
     const [searchParams, setSearchParams] = useSearchParams()
     const typeFilter = searchParams.get("type");
 
-    const vans = useLoaderData();
+    const dataPromise = useLoaderData();
 
+   function renderVanElements(vans) {
     const filteredVans = typeFilter ? vans.filter(v => v.type.toLowerCase() === typeFilter) : vans;
 
     const vanElements = filteredVans.map(van => {
@@ -29,20 +30,29 @@ export default function Vans() {
         </div> 
     )
     })
-
     return (
-        <div className="van-list-container">
-            <h1>Explore our van options</h1>
+        <>
             <div className="van-list-filter-buttons">
                 <button onClick={() => setSearchParams({type: "simple"})} className="van-type simple">Simple</button>
                 <button onClick={() => setSearchParams({type: "luxury"})} className="van-type luxury">Luxury</button>
                 <button onClick={() => setSearchParams({type: "rugged"})} className="van-type rugged">Rugged</button>
-
                 { typeFilter ? (<button onClick={() => setSearchParams({})} className="van-type clear-filters">Clear filter</button>) : null }
             </div>
             <div className="van-list">
                 {vanElements}
             </div>
+        </>
+    )
+   }
+
+    return (
+        <div className="van-list-container">
+            <h1>Explore our van options</h1>
+            <React.Suspense fallback={<h2>Loading...</h2>}>
+                <Await resolve={dataPromise.vans}>
+                    {renderVanElements}       
+                </Await>
+            </React.Suspense>
         </div>
     )
 

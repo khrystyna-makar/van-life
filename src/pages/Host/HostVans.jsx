@@ -1,17 +1,17 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { defer, Link, Await, useLoaderData } from "react-router-dom"
+import { getHostVans } from "../../api"
+
+export function loader() {
+    return defer({vans: getHostVans()}) 
+}
 
 export default function HostVans() {
 
-    const [vans, setVans] = React.useState([])
+    const dataPromise = useLoaderData()
 
-    React.useEffect(() => {
-        fetch("/api/host/vans")
-            .then(res => res.json())
-            .then(data => setVans(data.vans))
-    }, [])
-
-    const hostVansEls = vans.map(van => (
+    function renderHostVans(vans) {
+        const hostVansEls = vans.map(van => (
         <Link
             to={`${van.id}`}
             key={van.id}
@@ -26,22 +26,22 @@ export default function HostVans() {
             </div>
         </Link>
     ))
-
+    return (
+        <section>
+            {hostVansEls}
+        </section>
+    )
+   }
 
     return (
         <section>
         <h1 className="host-vans-title">Your listed vans</h1>
         <div className="host-vans-list">
-            {
-                vans.length > 0 ? (
-                    <section>
-                        {hostVansEls}
-                    </section>
-
-                ) : (
-                        <h2>Loading...</h2>
-                    )
-            }
+            <React.Suspense fallback={<h2>Loading...</h2>}>
+                <Await resolve={dataPromise.vans}>
+                    {renderHostVans}
+                </Await>
+          </React.Suspense>     
         </div>
     </section>
     )
